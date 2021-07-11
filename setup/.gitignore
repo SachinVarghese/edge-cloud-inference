@@ -1,0 +1,3 @@
+istio-*
+manifests/model.yaml
+manifests/pod.yaml

@@ -1,1 +1,1 @@
-# edge-cloud-inference
+# Edge Cloud Joint Inference with Seldon Core and Tempo

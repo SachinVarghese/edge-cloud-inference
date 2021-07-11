@@ -1,0 +1,21 @@
+name: edge-cloud-inference
+channels:
+  - defaults
+dependencies:
+  - pip=21.0.1=py37h06a4308_0
+  - python=3.7.9=h7579374_0
+  - pip:
+      - opencv-python-headless
+      - conda-pack
+      - jupyter
+      - jupyter_contrib_nbextensions
+      - jupyter_nbextensions_configurator
+      - mlops-tempo
+      - dill
+      - mlserver==0.3.2
+      - xgboost
+      - ansible
+      - pytest==6.2.0
+      - pytest-asyncio==0.14.0
+      - pandas==1.0.1
+      - numpyro==0.6.0
