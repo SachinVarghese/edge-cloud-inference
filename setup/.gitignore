@@ -1,3 +1,3 @@
 istio-*
-manifests/model.yaml
-manifests/pod.yaml
+manifests/*
+kubeedge-v1.7.1-linux-amd64

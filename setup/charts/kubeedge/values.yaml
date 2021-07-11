@@ -1,0 +1,12 @@
+# Default values for kubeedge.
+
+service:
+  type: LoadBalancer
+
+cloudHub:
+  advertiseAddress:
+    - 34.141.236.23
+  https:
+    port: 10002
+  websocket:
+    port: 10000

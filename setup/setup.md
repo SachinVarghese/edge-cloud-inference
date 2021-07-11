@@ -22,6 +22,15 @@ helm upgrade --install seldon-core seldon-core-operator     --repo https://stora
 ```sh
 kubectl create ns minio-system
 helm repo add minio https://helm.min.io/
-helm upgrade --install minio minio/minio --set accessKey="minioadmin" --set secretKey="minioadmin" --namespace minio-system  --version 8.0.8
-kubectl apply -f manifests/miniovirtualservice.yaml
+helm upgrade --install minio minio/minio --set accessKey="minioadmin" --set secretKey="minioadmin" --namespace minio-system  --version 8.0.8 --set service.type="LoadBalancer"
+```
+
+5. Download and Kubeedge Cloud Core
+
+```sh
+wget https://github.com/kubeedge/kubeedge/releases/download/v1.7.1/kubeedge-v1.7.1-linux-amd64.tar.gz
+tar -xvzf kubeedge-v1.7.1-linux-amd64.tar.gz
+
+kubectl create ns kubeedge
+helm upgrade --install kubeedge ./charts/kubeedge/ --namespace kubeedge --recreate-pods
 ```
