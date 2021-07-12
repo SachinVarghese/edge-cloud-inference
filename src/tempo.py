@@ -60,8 +60,8 @@ def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
         runtime_options=edgeKubernetesOptions,
     )
     def classifier(payload: np.ndarray) -> Tuple[np.ndarray, str]:
-        res1 = classifier.models.edge_inference(input=payload)
         # Custom Logic for hard example mining based on threshold, IBT, Cross Entropy etc
+        res1 = classifier.models.edge_inference(input=payload)
         if res1[0] == 1:
             return res1, EdgePredictionTag
         else:

@@ -1,7 +1,7 @@
-import joblib
-from sklearn.linear_model import LogisticRegression
 from src.data import IrisData
+from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
+import joblib
 
 EdgeModelFolder = "edge"
 CloudModelFolder = "cloud"

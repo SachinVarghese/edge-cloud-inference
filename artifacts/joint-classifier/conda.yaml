@@ -4,6 +4,5 @@ channels:
 dependencies:
   - python=3.7.9
   - pip:
-    - mlops-tempo
+    - git+https://github.com/SachinVarghese/tempo.git@82b3c40f29ac48584e1e60042439e7013c766166
     - mlserver==0.3.2
-    - click
