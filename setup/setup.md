@@ -2,6 +2,10 @@
 
 1. Setup k8s cluster
 
+```sh
+kind create cluster --config=./cluster/kind.yaml
+```
+
 2. Install Istio
 
 ```sh
@@ -33,4 +37,17 @@ tar -xvzf kubeedge-v1.7.1-linux-amd64.tar.gz
 
 kubectl create ns kubeedge
 helm upgrade --install kubeedge ./charts/kubeedge/ --namespace kubeedge --recreate-pods
+```
+
+6. Configure Edge Device and connect to cloud by fetching cloud secret and update edge config at `edgecore.yaml` and update the loadbalancer IP and recreate cloud core secrets in the kubeedge namespace as needed.
+
+```sh
+./kubeedge-v1.7.1-linux-amd64/edge/edgecore --minconfig > ./edge-core/edge.yaml
+kubectl get secret -n kubeedge tokensecret -o=jsonpath='{.data.tokendata}' | base64 -d
+```
+
+7. Run edge device
+
+```sh
+sudo ./kubeedge-v1.7.1-linux-amd64/edge/edgecore --config ./edge-core/edge.yaml
 ```

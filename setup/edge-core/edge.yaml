@@ -1,0 +1,47 @@
+# With --minconfig , you can easily used this configurations as reference.
+# It's useful to users who are new to KubeEdge, and you can modify/create your own configs accordingly. 
+# This configuration is suitable for beginners.
+
+apiVersion: edgecore.config.kubeedge.io/v1alpha1
+database:
+  dataSource: /home/sachin/projects/mlops/edge-cloud-inference/setup/edge-core/edgecore.db
+kind: EdgeCore
+modules:
+  edgeHub:
+    enable: true
+    heartbeat: 15
+    httpServer: https://34.90.40.227:10002
+    token: "5082058f39639a34fbcafe0bb3a824489a01f21f0d711d3308e5bedf092f5ae9.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjYyNjQ3MTl9.rvQBXvn2uCOhjhCihqFc7h4ZnfjPVjdddKNTEwyPhME"
+    websocket:
+      enable: true
+      handshakeTimeout: 30
+      readDeadline: 15
+      server: 34.90.40.227:10000
+      writeDeadline: 15
+  edged:
+    cgroupDriver: cgroupfs
+    cgroupRoot: ""
+    cgroupsPerQOS: true
+    clusterDNS: ""
+    clusterDomain: ""
+    devicePluginEnabled: false
+    dockerAddress: unix:///var/run/docker.sock
+    enable: true
+    gpuPluginEnabled: false
+    hostnameOverride: edge-compute
+    nodeIP: 192.168.1.166
+    podSandboxImage: kubeedge/pause:3.1
+    remoteImageEndpoint: unix:///var/run/dockershim.sock
+    remoteRuntimeEndpoint: unix:///var/run/dockershim.sock
+    runtimeType: docker
+  eventBus:
+    enable: false
+    mqttMode: 2
+    mqttQOS: 0
+    mqttRetain: false
+    mqttServerExternal: tcp://127.0.0.1:1883
+    mqttServerInternal: tcp://127.0.0.1:1884
+  edgeMesh:
+    enable: false  
+
+

@@ -15,7 +15,7 @@ CloudPredictionTag = "cloud prediction"
 edgeKubernetesOptions = RuntimeOptions()
 edgeKubernetesOptions.k8s_options = KubernetesOptions(
     replicas=1, 
-    nodeName="gke-cloud-core-default-pool-6eddfeeb-4rql",
+    nodeName="edge-compute",
     namespace="production",
     authSecretName="minio-secret",
 )
@@ -28,7 +28,6 @@ cloudKubernetesOptions.k8s_options = KubernetesOptions(
     namespace="production",
     authSecretName="minio-secret",
 )
-
 
 def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
 

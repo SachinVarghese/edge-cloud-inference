@@ -4,5 +4,5 @@ channels:
 dependencies:
   - python=3.7.9
   - pip:
-    - git+https://github.com/SachinVarghese/tempo.git@82b3c40f29ac48584e1e60042439e7013c766166
+    - git+https://github.com/SachinVarghese/tempo.git@1bc4b0c78fae7c1a8ee68a4c36efe39d09d01f0a
     - mlserver==0.3.2
