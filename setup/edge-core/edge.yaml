@@ -1,5 +1,5 @@
 # With --minconfig , you can easily used this configurations as reference.
-# It's useful to users who are new to KubeEdge, and you can modify/create your own configs accordingly. 
+# It's useful to users who are new to KubeEdge, and you can modify/create your own configs accordingly.
 # This configuration is suitable for beginners.
 
 apiVersion: edgecore.config.kubeedge.io/v1alpha1
@@ -10,13 +10,13 @@ modules:
   edgeHub:
     enable: true
     heartbeat: 15
-    httpServer: https://34.90.40.227:10002
-    token: "5082058f39639a34fbcafe0bb3a824489a01f21f0d711d3308e5bedf092f5ae9.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjYyNjQ3MTl9.rvQBXvn2uCOhjhCihqFc7h4ZnfjPVjdddKNTEwyPhME"
+    httpServer: https://34.91.95.139:10002
+    token: "2f0fbd39e4e20af949441385c45906332425c683fa4d467724234027c50fe4e7.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MjcwMjkyNjF9.3ZifTQVtshph7GYpFj29KK29SwdQMgTZk5J-lBTJvj0"
     websocket:
       enable: true
       handshakeTimeout: 30
       readDeadline: 15
-      server: 34.90.40.227:10000
+      server: 34.91.95.139:10000
       writeDeadline: 15
   edged:
     cgroupDriver: cgroupfs
@@ -42,6 +42,4 @@ modules:
     mqttServerExternal: tcp://127.0.0.1:1883
     mqttServerInternal: tcp://127.0.0.1:1884
   edgeMesh:
-    enable: false  
-
-
+    enable: false

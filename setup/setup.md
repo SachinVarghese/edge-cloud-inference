@@ -46,8 +46,28 @@ helm upgrade --install kubeedge ./charts/kubeedge/ --namespace kubeedge --recrea
 kubectl get secret -n kubeedge tokensecret -o=jsonpath='{.data.tokendata}' | base64 -d
 ```
 
-7. Run edge device
+7. Update host resolv.conf and run edge device to download from bucket
+
+```
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+```
 
 ```sh
 sudo ./kubeedge-v1.7.1-linux-amd64/edge/edgecore --config ./edge-core/edge.yaml
 ```
+
+8. Test Setup
+
+```sh
+kubectl apply -f manifests/iris-model.yaml -n production
+```
+
+9. Make a prediction on the edge side
+
+```sh
+docker run --rm curlimages/curl:7.78.0 -XPOST http://{EDGE_COMPUTE_IP}:9000/api/v0.1/predictions   -H "Content-Type: application/json" -d '{"data":{"ndarray":[[0.3,0.6,4.2,3.1]]}}'
+
+```
+
+Dependant on https://github.com/kubeedge/kubeedge/pull/2230

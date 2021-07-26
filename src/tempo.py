@@ -14,7 +14,7 @@ CloudPredictionTag = "cloud prediction"
 
 edgeKubernetesOptions = RuntimeOptions()
 edgeKubernetesOptions.k8s_options = KubernetesOptions(
-    replicas=1, 
+    replicas=1,
     nodeName="edge-compute",
     namespace="production",
     authSecretName="minio-secret",
@@ -23,11 +23,12 @@ edgeKubernetesOptions.k8s_options = KubernetesOptions(
 
 cloudKubernetesOptions = RuntimeOptions()
 cloudKubernetesOptions.k8s_options = KubernetesOptions(
-    replicas=2, 
-    nodeName="gke-cloud-core-default-pool-6eddfeeb-71bg",
+    replicas=2,
+    nodeName="gke-kubeedge-cloudcore-default-pool-4dbe91a1-2t80",
     namespace="production",
     authSecretName="minio-secret",
 )
+
 
 def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
 
@@ -53,8 +54,7 @@ def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
         name="joint-classifier",
         uri="s3://tempo/basic/pipeline",
         local_folder=f"{artifacts_folder}/{PipelineFolder}",
-        models=PipelineModels(edge_inference=edge_model,
-                              cloud_inference=cloud_model),
+        models=PipelineModels(edge_inference=edge_model, cloud_inference=cloud_model),
         description="A pipeline to make an edge based prediction or cloud based joint prediction for Iris classification",
         runtime_options=edgeKubernetesOptions,
     )
