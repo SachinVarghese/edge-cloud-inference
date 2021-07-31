@@ -11,7 +11,7 @@ dependencies:
       - jupyter
       - jupyter_contrib_nbextensions
       - jupyter_nbextensions_configurator
-      - git+https://github.com/SachinVarghese/tempo.git@1bc4b0c78fae7c1a8ee68a4c36efe39d09d01f0a
+      - git+https://github.com/SachinVarghese/tempo.git@daab2241ba9cecaee69481e3f06acea9005e0f2f
       - dill
       - mlserver==0.3.2
       - xgboost

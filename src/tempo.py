@@ -4,6 +4,7 @@ import numpy as np
 from src.train import CloudModelFolder, EdgeModelFolder
 
 from tempo.serve.metadata import ModelFramework, RuntimeOptions, KubernetesOptions
+from tempo.seldon.k8s import SeldonCoreOptions
 from tempo.serve.model import Model
 from tempo.serve.pipeline import Pipeline, PipelineModels
 from tempo.serve.utils import pipeline
@@ -12,34 +13,21 @@ PipelineFolder = "joint-classifier"
 EdgePredictionTag = "edge prediction"
 CloudPredictionTag = "cloud prediction"
 
-edgeKubernetesOptions = RuntimeOptions()
-edgeKubernetesOptions.k8s_options = KubernetesOptions(
-    replicas=1,
-    nodeName="edge-compute",
-    namespace="production",
-    authSecretName="minio-secret",
+edgeRuntimeOptions = RuntimeOptions()  # Docker Runtime
+edgeRuntimeOptions.k8s_options = KubernetesOptions(
+    replicas=1, namespace="production", nodeName="edge-compute",
 )
 
 
-cloudKubernetesOptions = RuntimeOptions()
-cloudKubernetesOptions.k8s_options = KubernetesOptions(
+cloudRuntimeOptions = SeldonCoreOptions()  # Kubernetes Runtime
+cloudRuntimeOptions.k8s_options = KubernetesOptions(
     replicas=2,
-    nodeName="gke-kubeedge-cloudcore-default-pool-4dbe91a1-2t80",
     namespace="production",
-    authSecretName="minio-secret",
+    nodeName="gke-kubeedge-cloudcore-default-pool-4dbe91a1-v7e5",
 )
 
 
 def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
-
-    edge_model = Model(
-        name="edge-model",
-        platform=ModelFramework.SKLearn,
-        local_folder=f"{artifacts_folder}/{EdgeModelFolder}",
-        uri="s3://tempo/joint-inference/edge",
-        description="An Edge based Iris classification model",
-        runtime_options=edgeKubernetesOptions,
-    )
 
     cloud_model = Model(
         name="cloud-model",
@@ -47,7 +35,16 @@ def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
         local_folder=f"{artifacts_folder}/{CloudModelFolder}",
         uri="s3://tempo/joint-inference/cloud",
         description="An Cloud based Iris classification model",
-        runtime_options=cloudKubernetesOptions,
+        runtime_options=cloudRuntimeOptions,
+    )
+
+    edge_model = Model(
+        name="edge-model",
+        platform=ModelFramework.SKLearn,
+        local_folder=f"{artifacts_folder}/{EdgeModelFolder}",
+        uri="s3://tempo/joint-inference/edge",
+        description="An Edge based Iris classification model",
+        runtime_options=edgeRuntimeOptions,
     )
 
     @pipeline(
@@ -56,7 +53,7 @@ def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
         local_folder=f"{artifacts_folder}/{PipelineFolder}",
         models=PipelineModels(edge_inference=edge_model, cloud_inference=cloud_model),
         description="A pipeline to make an edge based prediction or cloud based joint prediction for Iris classification",
-        runtime_options=edgeKubernetesOptions,
+        runtime_options=edgeRuntimeOptions,
     )
     def classifier(payload: np.ndarray) -> Tuple[np.ndarray, str]:
         # Custom Logic for hard example mining based on threshold, IBT, Cross Entropy etc

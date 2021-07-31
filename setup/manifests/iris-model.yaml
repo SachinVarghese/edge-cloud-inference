@@ -1,0 +1,18 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: iris-model
+spec:
+  name: iris-model
+  predictors:
+    - componentSpecs:
+        - spec:
+            nodeName: edge-compute
+            containers:
+              - name: iris-model-container
+                resources: {}
+      graph:
+        name: iris-model-container
+        implementation: SKLEARN_SERVER
+        modelUri: gs://seldon-models/sklearn/iris
+      name: default

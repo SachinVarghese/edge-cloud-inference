@@ -18,7 +18,7 @@ curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.10.2 TARGET_ARCH=x86_64
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/SeldonIO/seldon-core/master/notebooks/resources/seldon-gateway.yaml
 kubectl create namespace seldon-system
-helm upgrade --install seldon-core seldon-core-operator     --repo https://storage.googleapis.com/seldon-charts     --set usageMetrics.enabled=true     --namespace seldon-system     --set istio.enabled=true
+helm upgrade --install seldon-core seldon-core-operator     --repo https://storage.googleapis.com/seldon-charts     --set usageMetrics.enabled=true     --namespace seldon-system     --set istio.enabled=true --set storageInitializer.image=sachinmv31/rclone-storage-minio-initializer:latest
 ```
 
 4. Install Minio
@@ -46,7 +46,7 @@ helm upgrade --install kubeedge ./charts/kubeedge/ --namespace kubeedge --recrea
 kubectl get secret -n kubeedge tokensecret -o=jsonpath='{.data.tokendata}' | base64 -d
 ```
 
-7. Update host resolv.conf and run edge device to download from bucket
+7. Update host resolution in `/etc/resolv.conf` and run edge device
 
 ```
 nameserver 8.8.8.8
@@ -66,8 +66,33 @@ kubectl apply -f manifests/iris-model.yaml -n production
 9. Make a prediction on the edge side
 
 ```sh
-docker run --rm curlimages/curl:7.78.0 -XPOST http://{EDGE_COMPUTE_IP}:9000/api/v0.1/predictions   -H "Content-Type: application/json" -d '{"data":{"ndarray":[[0.3,0.6,4.2,3.1]]}}'
+docker run --rm curlimages/curl:7.78.0 -XPOST http://172.17.0.2:9000/api/v0.1/predictions -s  -H "Content-Type: application/json" -d '{"data":{"ndarray":[[0.3,0.6,4.2,3.1]]}}'
 
 ```
 
-Dependant on https://github.com/kubeedge/kubeedge/pull/2230
+10. Dependant on https://github.com/kubeedge/kubeedge/pull/2230 So build custom rclone image for storage init
+
+```sh
+docker build -t sachinmv31/rclone-storage-minio-initializer storageInit
+docker push sachinmv31/rclone-storage-minio-initializer
+```
+
+Re-configure Seldon Core
+
+```sh
+helm upgrade --install seldon-core seldon-core-operator     --repo https://storage.googleapis.com/seldon-charts     --set usageMetrics.enabled=true     --namespace seldon-system     --set istio.enabled=true --set storageInitializer.image=sachinmv31/rclone-storage-minio-initializer:latest
+```
+
+11. Apply new loadbalancer service
+
+```
+kubectl apply -n production -f manifests/cloud-svc.yaml
+export LB_IP=$(kubectl get svc -n production cloud-model-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+```
+
+12. Update host aliases in volume mount of the joint classifier container `/var/lib/edged/pods/${PODID}/etc-hosts`
+
+```
+172.17.0.2      edge-model
+$LB_IP  cloud-model
+```

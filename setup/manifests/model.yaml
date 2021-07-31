@@ -1,0 +1,17 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: seldon-model
+spec:
+  name: test-deployment
+  predictors:
+    - componentSpecs:
+        - spec:
+            nodeName: edge-compute
+            containers:
+              - image: seldonio/mock_classifier:1.5.0
+                name: classifier
+      graph:
+        name: classifier
+        type: MODEL
+      name: example
