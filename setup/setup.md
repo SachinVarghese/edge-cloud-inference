@@ -1,4 +1,4 @@
-# Setup
+## Setup
 
 1. Setup k8s cluster
 
