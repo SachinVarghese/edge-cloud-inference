@@ -11,7 +11,7 @@ from tempo.serve.utils import pipeline
 
 PipelineFolder = "joint-classifier"
 EdgePredictionTag = "edge prediction"
-CloudPredictionTag = "cloud prediction"
+JointPredictionTag = "joint prediction"
 
 edgeRuntimeOptions = RuntimeOptions()  # Docker Runtime
 edgeRuntimeOptions.k8s_options = KubernetesOptions(
@@ -61,6 +61,10 @@ def get_tempo_artifacts(artifacts_folder: str) -> Tuple[Pipeline, Model, Model]:
         if res1[0] == 1:
             return res1, EdgePredictionTag
         else:
-            return classifier.models.cloud_inference(input=payload), CloudPredictionTag
+            return (
+                classifier.models.cloud_inference(input=payload),
+                res1,
+                JointPredictionTag,
+            )
 
     return classifier, edge_model, cloud_model

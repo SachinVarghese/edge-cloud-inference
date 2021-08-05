@@ -87,12 +87,12 @@ helm upgrade --install seldon-core seldon-core-operator     --repo https://stora
 
 ```
 kubectl apply -n production -f manifests/cloud-svc.yaml
-export LB_IP=$(kubectl get svc -n production cloud-model-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export CLOUD_LB_IP=$(kubectl get svc -n production cloud-model-svc -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 ```
 
 12. Update host aliases in volume mount of the joint classifier container `/var/lib/edged/pods/${PODID}/etc-hosts`
 
 ```
-172.17.0.2      edge-model
-$LB_IP  cloud-model
+172.17.0.2    edge-model
+$CLOUD_LB_IP  cloud-model
 ```
