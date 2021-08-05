@@ -2,9 +2,9 @@
 
 This repo is an experiment to run a joint inference with ML models running on the cloud and edge devices using the following projects
 
-- Kubeedge on Kubernetes
-- Seldon Core
-- Tempo
+- [Kubeedge](https://kubeedge.io/en/) on Kubernetes
+- [Seldon Core](https://github.com/SeldonIO/seldon-core)
+- [Tempo](https://github.com/SeldonIO/tempo)
 
 ## Introduction
 
